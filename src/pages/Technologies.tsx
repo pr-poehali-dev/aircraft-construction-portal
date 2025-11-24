@@ -1,8 +1,11 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Icon from '@/components/ui/icon';
+import AnimatedSection from '@/components/AnimatedSection';
+import { useState } from 'react';
 
 export default function Technologies() {
+  const [activeTab, setActiveTab] = useState(0);
   const technologies = [
     {
       icon: 'Layers',
@@ -59,7 +62,56 @@ export default function Technologies() {
 
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="flex flex-wrap gap-3 justify-center mb-12">
+            {technologies.map((tech, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveTab(index)}
+                className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                  activeTab === index
+                    ? 'bg-blue-500 text-white shadow-lg scale-105'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                {tech.title}
+              </button>
+            ))}
+          </div>
+          
+          <AnimatedSection key={activeTab} animation="fade-up">
+            <div className="bg-slate-50 rounded-xl overflow-hidden shadow-lg max-w-4xl mx-auto">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-8">
+                <div className="flex items-center gap-4">
+                  <div className="bg-white/20 w-16 h-16 rounded-lg flex items-center justify-center">
+                    <Icon name={technologies[activeTab].icon} size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-3xl font-bold text-white">
+                    {technologies[activeTab].title}
+                  </h3>
+                </div>
+              </div>
+              <div className="p-8">
+                <p className="text-lg text-slate-600 mb-8">
+                  {technologies[activeTab].description}
+                </p>
+                <h4 className="font-semibold text-slate-900 mb-4 text-lg">Преимущества:</h4>
+                <div className="space-y-3">
+                  {technologies[activeTab].benefits.map((benefit, i) => (
+                    <div key={i} className="flex items-center gap-3 bg-white p-4 rounded-lg">
+                      <Icon name="Check" size={20} className="text-green-500 flex-shrink-0" />
+                      <span className="text-slate-700">{benefit}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      <section className="py-16 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-8" style={{display: 'none'}}>
             {technologies.map((tech, index) => (
               <div key={index} className="bg-slate-50 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6">

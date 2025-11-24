@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Icon from '@/components/ui/icon';
+import AnimatedSection from '@/components/AnimatedSection';
 
 export default function Construction() {
   const sections = [
@@ -47,7 +48,8 @@ export default function Construction() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8">
             {sections.map((section, index) => (
-              <div key={index} className="bg-slate-50 p-8 rounded-xl">
+              <AnimatedSection key={index} animation="fade-up" delay={index * 100}>
+              <div className="bg-slate-50 p-8 rounded-xl hover:shadow-lg transition-shadow">
                 <div className="bg-blue-100 w-14 h-14 rounded-lg flex items-center justify-center mb-4">
                   <Icon name={section.icon} size={28} className="text-blue-600" />
                 </div>
@@ -58,6 +60,7 @@ export default function Construction() {
                   {section.content}
                 </p>
               </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>

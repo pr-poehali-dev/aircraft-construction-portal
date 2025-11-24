@@ -2,8 +2,31 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
+import InteractiveCounter from '@/components/InteractiveCounter';
+import AccordionFAQ from '@/components/AccordionFAQ';
+import ContactForm from '@/components/ContactForm';
+import AnimatedSection from '@/components/AnimatedSection';
 
 export default function Index() {
+  const faqItems = [
+    {
+      question: 'Сколько времени занимает разработка нового самолёта?',
+      answer: 'Полный цикл создания нового самолёта от концепции до первого полёта занимает 10-15 лет. Это включает проектирование, сертификацию, производство и испытания.'
+    },
+    {
+      question: 'Какие материалы используются в современных самолётах?',
+      answer: 'Современные самолёты строятся из алюминиевых сплавов (60-70%), композитных материалов (20-50%), титана для критичных узлов и стали для шасси.'
+    },
+    {
+      question: 'Как обеспечивается безопасность полётов?',
+      answer: 'Безопасность обеспечивается многоуровневой системой: резервирование систем, строгие стандарты сертификации, регулярное техобслуживание и обучение экипажа.'
+    },
+    {
+      question: 'Какова стоимость разработки нового самолёта?',
+      answer: 'Разработка нового широкофюзеляжного самолёта требует инвестиций от $15 до $20 миллиардов. Региональные самолёты обходятся в $3-5 миллиардов.'
+    }
+  ];
+
   const features = [
     {
       icon: 'Ruler',
@@ -140,19 +163,98 @@ export default function Index() {
               <h3 className="text-2xl font-bold mb-4">Статистика отрасли</h3>
               <div className="space-y-6">
                 <div>
-                  <div className="text-4xl font-bold">25+</div>
+                  <div className="text-4xl font-bold">
+                    <InteractiveCounter end={25} suffix="+" />
+                  </div>
                   <div className="text-blue-100">Лет опыта</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold">500+</div>
+                  <div className="text-4xl font-bold">
+                    <InteractiveCounter end={500} suffix="+" />
+                  </div>
                   <div className="text-blue-100">Статей в базе</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-bold">10К+</div>
+                  <div className="text-4xl font-bold">
+                    <InteractiveCounter end={10} suffix="К+" />
+                  </div>
                   <div className="text-blue-100">Специалистов</div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <h2 className="text-4xl font-bold text-slate-900 mb-4 text-center">
+              Часто задаваемые вопросы
+            </h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto text-center mb-12">
+              Ответы на популярные вопросы о самолётостроении
+            </p>
+          </AnimatedSection>
+          <AnimatedSection delay={200}>
+            <div className="max-w-3xl mx-auto">
+              <AccordionFAQ items={faqItems} />
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12">
+            <AnimatedSection animation="slide-right">
+              <div>
+                <h2 className="text-4xl font-bold text-slate-900 mb-6">
+                  Свяжитесь с нами
+                </h2>
+                <p className="text-lg text-slate-600 mb-6">
+                  Есть вопросы о самолётостроении? Хотите предложить тему для статьи? Мы всегда рады обратной связи!
+                </p>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center">
+                      <Icon name="Mail" size={20} className="text-blue-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-slate-900">Email</div>
+                      <div className="text-slate-600">info@aeroconstruct.ru</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center">
+                      <Icon name="Phone" size={20} className="text-blue-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-slate-900">Телефон</div>
+                      <div className="text-slate-600">+7 (495) 123-45-67</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center">
+                      <Icon name="MapPin" size={20} className="text-blue-600" />
+                    </div>
+                    <div>
+                      <div className="font-semibold text-slate-900">Адрес</div>
+                      <div className="text-slate-600">Москва, ул. Авиационная, 15</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection animation="slide-left" delay={200}>
+              <div className="bg-slate-50 p-8 rounded-xl">
+                <h3 className="text-2xl font-bold text-slate-900 mb-6">
+                  Форма обратной связи
+                </h3>
+                <ContactForm />
+              </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
