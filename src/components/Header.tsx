@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Icon from '@/components/ui/icon';
+import ThemeToggle from '@/components/ThemeToggle';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +16,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-slate-900 text-white sticky top-0 z-50 shadow-lg">
+    <header className="bg-slate-900 dark:bg-slate-950 text-white sticky top-0 z-50 shadow-lg backdrop-blur-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
@@ -26,25 +27,30 @@ export default function Header() {
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="hover:text-blue-400 transition-colors text-sm font-medium"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          <div className="hidden md:flex items-center gap-6">
+            <nav className="flex items-center gap-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="hover:text-blue-400 transition-colors text-sm font-medium"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+            <ThemeToggle />
+          </div>
 
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            <Icon name={isMenuOpen ? 'X' : 'Menu'} size={24} />
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <ThemeToggle />
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              <Icon name={isMenuOpen ? 'X' : 'Menu'} size={24} />
+            </button>
+          </div>
         </div>
 
         {isMenuOpen && (

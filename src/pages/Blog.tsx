@@ -1,8 +1,15 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Icon from '@/components/ui/icon';
+import { useState } from 'react';
+import AnimatedSection from '@/components/AnimatedSection';
+import ArticleModal from '@/components/ArticleModal';
 
 export default function Blog() {
+  const [selectedCategory, setSelectedCategory] = useState('Все');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedArticle, setSelectedArticle] = useState<typeof articles[0] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const articles = [
     {
       icon: 'Flame',
@@ -80,6 +87,18 @@ export default function Blog() {
 
   const categories = ['Все', 'Материалы', 'Аэродинамика', 'Авионика', 'Технологии', 'Безопасность', 'Производство'];
 
+  const filteredArticles = articles.filter(article => {
+    const matchesCategory = selectedCategory === 'Все' || article.category === selectedCategory;
+    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                         article.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const handleArticleClick = (article: typeof articles[0]) => {
+    setSelectedArticle(article);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -95,13 +114,30 @@ export default function Blog() {
         </div>
       </section>
 
-      <section className="py-8 bg-white border-b">
+      <section className="py-8 bg-white dark:bg-slate-900 border-b dark:border-slate-700">
         <div className="container mx-auto px-4">
+          <div className="mb-6">
+            <div className="relative max-w-md">
+              <Icon name="Search" size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Поиск статей..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-slate-800 dark:text-white"
+              />
+            </div>
+          </div>
           <div className="flex flex-wrap gap-3">
             {categories.map((category) => (
               <button
                 key={category}
-                className="px-4 py-2 rounded-full bg-slate-100 hover:bg-blue-500 hover:text-white transition-colors text-sm font-medium text-slate-700"
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full transition-all text-sm font-medium ${
+                  selectedCategory === category
+                    ? 'bg-blue-500 text-white shadow-md'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
               >
                 {category}
               </button>
@@ -110,11 +146,21 @@ export default function Blog() {
         </div>
       </section>
 
-      <section className="py-16 bg-slate-50">
+      <section className="py-16 bg-slate-50 dark:bg-slate-800">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article, index) => (
-              <article key={index} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow overflow-hidden group cursor-pointer">
+          {filteredArticles.length === 0 ? (
+            <div className="text-center py-12">
+              <Icon name="Search" size={64} className="mx-auto text-slate-300 mb-4" />
+              <p className="text-xl text-slate-500 dark:text-slate-400">Статей не найдено</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredArticles.map((article, index) => (
+                <AnimatedSection key={index} animation="fade-up" delay={index * 50}>
+                  <article 
+                    onClick={() => handleArticleClick(article)}
+                    className="bg-white dark:bg-slate-900 rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden group cursor-pointer h-full flex flex-col hover:scale-105"
+                  >
                 <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-6">
                   <div className="bg-white/20 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                     <Icon name={article.icon} size={24} className="text-white" />
@@ -142,12 +188,20 @@ export default function Blog() {
                       <span>{article.readTime}</span>
                     </div>
                   </div>
-                </div>
-              </article>
-            ))}
-          </div>
+                  </div>
+                  </article>
+                </AnimatedSection>
+              ))}
+            </div>
+          )}
         </div>
       </section>
+
+      <ArticleModal 
+        article={selectedArticle}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
 
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
